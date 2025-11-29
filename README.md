@@ -18,11 +18,5 @@ Aqui vou listar os tópicos que estou revisando e alguns links úteis.
 
 ## Observações
 - Este repositório é meu espaço de estudos. Vou adicionar exercícios, exemplos e anotações conforme eu for revisando.
-- Imagem no topo criada com ferramentas de geração de imagem para ilustrar a revisão.
 
----
 
-Se quiser, eu posso:
-- Gerar exemplos de código para cada tópico acima;
-- Criar um índice automático do README com links para seções;
-- Adicionar snippets de exercícios práticos.
