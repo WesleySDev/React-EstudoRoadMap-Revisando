@@ -1,95 +1,103 @@
-//// O link abaixo puxa dados de um produto em formato JSON
-// https://ranekapi.origamid.dev/json/api/produto/
-
-// Crie uma interface com 3 botões, um para cada produto.
-
-// Ao clicar no botão faça um fetch a api e mostre os dados do produto na tela.
-
-// Mostre apenas um produto por vez
-
-// Mostre a mensagem carregando... enquanto o fetch é realizado
-
+// Importa o hook useState do React
+// Ele serve para criar estados (variáveis que mudam e atualizam a tela)
 import { useState } from "react";
 
 
-type Foto  = {
-    src: string;
-    titulo: string;
-
+// Tipo para as fotos do produto
+// Cada foto tem uma URL (src) e um título
+type Foto = {
+  src: string;
+  titulo: string;
 };
+
+// Tipo do produto retornado pela API
+// Esse tipo reflete exatamente o JSON da Ranek API
 type Produto = {
-    
-    id: string;
-    nome: string;
-    preco: string;
-    descricao: string;
-    fotos: Foto[];
-}
+  id: string;
+  nome: string;
+  preco: string;
+  descricao: string;
+  fotos: Foto[];
+};
+
+// Componente principal
 function Exercio() {
- const [produto, setProduto] = useState<Produto | null>(null);
- const [loading, setLoading] = useState(false)
 
+  // Estado que guarda o produto buscado na API
+  // Pode ser um Produto ou null (quando ainda não foi carregado)
+  const [produto, setProduto] = useState<Produto | null>(null);
 
- const produtos = ["notebook", "smartphone", "tablet"]
+  // Estado para controlar se a API está carregando
+  const [loading, setLoading] = useState(false);
 
+  // Lista de produtos disponíveis
+  // Esses nomes são usados na URL da API
+  const produtos = ["notebook", "smartphone", "tablet"];
 
+  // Função chamada quando o usuário clica em um botão
+  // Recebe o nome do produto
+  function buscarDados(nome: string) {
 
-function buscarDados (nome: string) {
-   setLoading(true)
+    // Ativa o estado de carregamento
+    setLoading(true);
 
+    // Faz a requisição para a API usando o nome do produto
     fetch(`https://ranekapi.origamid.dev/json/api/produto/${nome}`)
-    .then((res) => res.json())
-    .then((data: Produto) => {
-        setProduto(data);
-        setLoading(false);
-    })
-    .catch((err) => {
-        console.error (err);
-        setLoading(false);
-    });
-}
 
-  return(
+      // Converte a resposta da API para JSON
+      .then((res) => res.json())
 
+      // Quando os dados chegam, salva no estado produto
+      .then((data: Produto) => {
+        setProduto(data);      // guarda o produto
+        setLoading(false);     // desativa o loading
+      })
 
-    
+      // Caso ocorra algum erro na requisição
+      .catch((err) => {
+        console.error(err);    // mostra o erro no console
+        setLoading(false);     // desativa o loading
+      });
+  }
+
+  // JSX (o que será exibido na tela)
+  return (
     <div>
-        
-    <h1>Pordutos</h1>
 
-    {produtos.map((nome) =>(
-    <button key={nome} onClick={() => buscarDados(nome)}>
-      {nome}
-    </button>
-     ))}
+      {/* Título da página */}
+      <h1>Produtos</h1>
 
-     {loading && <p>carregando....</p>}
+      {/* Cria um botão para cada produto */}
+      {produtos.map((nome) => (
+        <button
+          key={nome}                   // chave única para o React
+          onClick={() => buscarDados(nome)} // chama a API ao clicar
+        >
+          {nome}
+        </button>
+      ))}
 
-     {produto && (
+      {/* Mostra mensagem enquanto a API está carregando */}
+      {loading && <p>Carregando...</p>}
+
+      {/* Mostra os dados apenas se um produto existir */}
+      {produto && (
         <div>
-            <h2>{produto.nome}</h2>
-            <p>Preço: R$ {produto.preco}</p>
-            <p>Descrição: {produto.descricao}</p>
-            <img src={produto.fotos[0].src}
-             alt={produto.fotos[0].titulo}
-             width="200"
-             />
+          <h2>{produto.nome}</h2>
+          <p>Preço: R$ {produto.preco}</p>
+          <p>Descrição: {produto.descricao}</p>
 
+          {/* Mostra a primeira foto do produto */}
+          <img
+            src={produto.fotos[0].src}
+            alt={produto.fotos[0].titulo}
+            width="200"
+          />
         </div>
-     )}
-
-
-
-
-
-
+      )}
     </div>
-   
-  
-  
-)
-  
-  
+  );
 }
 
+// Exporta o componente para ser usado em outros arquivos
 export default Exercio;
