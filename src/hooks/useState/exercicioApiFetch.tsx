@@ -41,7 +41,7 @@ function Exercio() {
     <div>
       <h1>Produtos</h1>
 
-      {/* Botão para cada produto */}
+      {/* Botão para cada produto! */}
       {produtos.map((nome) => (
         <button key={nome} onClick={() => buscarDados(nome)}>
           {nome}
